@@ -20,22 +20,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"jiuyuyutianqing.github.io","root":"/STM32-/","images":"/STM32-/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/STM32-/js/config.js" defer></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://jiuyuyutianqing.github.io/STM32-/index.html">
+    <meta name="description" content="基本概念 输入捕获是用来测量信号的时间参数的，通常用来测量并且记录两个电平发生变化的瞬间的时间，并通过此经过一系列的公式来得到自己想要的结果的东西  运行原理 当外部信号发生变化的时候，不同的通道会对当时的一些信号（脉冲信号）存入ccr寄存器里面，后面用户再将ccr寄存器里面的数据读取出来   例如 让通道1捕捉电平信号的上升沿，让通道2捕捉电平信号的下降沿，ccr1就存通道1捕捉的信息，ccr2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="输入捕获">
+<meta property="og:url" content="https://jiuyuyutianqing.github.io/STM32-/2026/02/10/%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="基本概念 输入捕获是用来测量信号的时间参数的，通常用来测量并且记录两个电平发生变化的瞬间的时间，并通过此经过一系列的公式来得到自己想要的结果的东西  运行原理 当外部信号发生变化的时候，不同的通道会对当时的一些信号（脉冲信号）存入ccr寄存器里面，后面用户再将ccr寄存器里面的数据读取出来   例如 让通道1捕捉电平信号的上升沿，让通道2捕捉电平信号的下降沿，ccr1就存通道1捕捉的信息，ccr2">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jiuyuyutianqing.github.io/STM32-/.io//image.png">
+<meta property="og:image" content="https://jiuyuyutianqing.github.io/STM32-/.io//image-1.png">
+<meta property="og:image" content="https://jiuyuyutianqing.github.io/STM32-/.io//image-2.png">
+<meta property="og:image" content="https://jiuyuyutianqing.github.io/STM32-/.io//image-3.png">
+<meta property="og:image" content="https://jiuyuyutianqing.github.io/STM32-/.io//image-4.png">
+<meta property="og:image" content="https://jiuyuyutianqing.github.io/STM32-/.io//image-5.png">
+<meta property="article:published_time" content="2026-02-10T13:00:11.000Z">
+<meta property="article:modified_time" content="2026-02-10T13:17:24.784Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jiuyuyutianqing.github.io/STM32-/.io//image.png">
 
 
-<link rel="canonical" href="https://jiuyuyutianqing.github.io/STM32-/">
+<link rel="canonical" href="https://jiuyuyutianqing.github.io/STM32-/2026/02/10/%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://jiuyuyutianqing.github.io/STM32-/2026/02/10/%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7/","path":"2026/02/10/输入捕获/","title":"输入捕获"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hexo</title>
+<title>输入捕获 | Hexo</title>
   
 
 
@@ -82,7 +93,7 @@
 
     <a href="/STM32-/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Hexo</h1>
+      <p class="site-title">Hexo</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -104,7 +115,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -117,6 +128,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">运行原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E9%9D%A2%E5%AF%B9%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86%E8%BF%9B%E8%A1%8C%E7%9B%B8%E5%85%B3%E5%9B%BE%E5%83%8F%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">下面对运行原理进行相关图像说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%AE%9E%E9%AA%8C%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">相关实验示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E5%A3%B0%E6%B3%A2%E6%B5%8B%E8%B7%9D%E5%AE%9E%E9%AA%8C"><span class="nav-number">3.1.</span> <span class="nav-text">超声波测距实验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%99%A8%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.1.1.</span> <span class="nav-text">相关器件介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.1.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -146,16 +158,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="https://jiuyuyutianqing.github.io/STM32-/2026/02/10/%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -169,13 +182,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Hexo">
+      <meta itemprop="name" content="输入捕获 | Hexo">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/STM32-/2026/02/10/%E8%BE%93%E5%85%A5%E6%8D%95%E8%8E%B7/" class="post-title-link" itemprop="url">输入捕获</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          输入捕获
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -198,8 +211,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+    <div class="post-body" itemprop="articleBody"><h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
 <li>输入捕获是用来测量信号的时间参数的，通常用来测量并且记录两个电平发生变化的瞬间的时间，并通过此经过一系列的公式来得到自己想要的结果的东西</li>
 </ul>
 <h1 id="运行原理"><a href="#运行原理" class="headerlink" title="运行原理"></a>运行原理</h1><ul>
@@ -209,7 +221,6 @@
 <h2 id="下面对运行原理进行相关图像说明"><a href="#下面对运行原理进行相关图像说明" class="headerlink" title="下面对运行原理进行相关图像说明"></a>下面对运行原理进行相关图像说明</h2><p><img src="/STM32-/.io//image.png" alt="alt text"><br><img src="/STM32-/.io//image-1.png" alt="alt text"><br><img src="/STM32-/.io//image-2.png" alt="alt text"></p>
 <h1 id="相关实验示例"><a href="#相关实验示例" class="headerlink" title="相关实验示例"></a>相关实验示例</h1><h2 id="超声波测距实验"><a href="#超声波测距实验" class="headerlink" title="超声波测距实验"></a>超声波测距实验</h2><h3 id="相关器件介绍"><a href="#相关器件介绍" class="headerlink" title="相关器件介绍"></a>相关器件介绍</h3><p><img src="/STM32-/.io//image-3.png" alt="alt text"><br><img src="/STM32-/.io//image-4.png" alt="alt text"><br><img src="/STM32-/.io//image-5.png" alt="alt text">  </p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//让计数器CNT归零</span></span><br><span class="line">    __HAL_TIM_SET_COUNTER(&amp;htim1,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//清除CC1\CC2标志位</span></span><br><span class="line">    __HAL_TIM_CLEAR_FLAG(&amp;htim1,TIM_FLAG_CC1);</span><br><span class="line">    __HAL_TIM_CLEAR_FLAG(&amp;htim1,TIM_FLAG_CC2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//启动输入捕获</span></span><br><span class="line">    HAL_TIM_IC_Start(&amp;htim1,TIM_CHANNEL_1);</span><br><span class="line">    HAL_TIM_IC_Start(&amp;htim1,TIM_CHANNEL_2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向trig发送脉冲</span></span><br><span class="line">    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_0,GPIO_PIN_SET);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">uint32_t</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++);</span><br><span class="line"></span><br><span class="line">    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_0,GPIO_PIN_RESET);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等待测量结束</span></span><br><span class="line">    <span class="type">uint8_t</span> success=<span class="number">0</span>;</span><br><span class="line">    <span class="type">uint32_t</span> expireTime=HAL_GetTick()+<span class="number">50</span>;<span class="comment">//计算超时时间</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(expireTime&gt;HAL_GetTick())</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="type">uint32_t</span> cc1Flag=__HAL_TIM_GET_FLAG(&amp;htim1,TIM_FLAG_CC1);</span><br><span class="line">      <span class="type">uint32_t</span> cc2Flag=__HAL_TIM_GET_FLAG(&amp;htim1,TIM_FLAG_CC2);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(cc1Flag&amp;&amp;cc2Flag)</span><br><span class="line">      &#123;</span><br><span class="line">        success=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//关闭定时器 </span></span><br><span class="line">    HAL_TIM_IC_Stop(&amp;htim1,TIM_CHANNEL_1);</span><br><span class="line">    HAL_TIM_IC_Stop(&amp;htim1,TIM_CHANNEL_2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//计算测量结果</span></span><br><span class="line">    <span class="keyword">if</span>(success==<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="type">uint16_t</span> ccr1=__HAL_TIM_GET_COMPARE(&amp;htim1,TIM_CHANNEL_1);</span><br><span class="line">      <span class="type">uint16_t</span> ccr2=__HAL_TIM_GET_COMPARE(&amp;htim1,TIM_CHANNEL_2);</span><br><span class="line"></span><br><span class="line">      <span class="type">float</span> pulseWidth = (ccr2-ccr1)*<span class="number">1e-6</span>f;<span class="comment">//计算脉宽</span></span><br><span class="line">      <span class="type">float</span> distance = <span class="number">340.0f</span> *pulseWidth/<span class="number">2.0f</span>;</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span>(distance&lt;<span class="number">0.2</span>)</span><br><span class="line">      &#123;</span><br><span class="line">        HAL_GPIO_WritePin(GPIOC,GPIO_PIN_13,GPIO_PIN_RESET);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> </span><br><span class="line">      &#123;</span><br><span class="line">        HAL_GPIO_WritePin(GPIOC,GPIO_PIN_13,GPIO_PIN_SET);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-      
     </div>
 
     
@@ -217,161 +228,22 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/STM32-/2026/02/10/Text1/" rel="prev" title="Text1">
+                  <i class="fa fa-angle-left"></i> Text1
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://jiuyuyutianqing.github.io/STM32-/2026/02/10/Text1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/STM32-/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/STM32-/2026/02/10/Text1/" class="post-title-link" itemprop="url">Text1</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2026-02-10 09:55:34 / Modified: 09:59:10" itemprop="dateCreated datePublished" datetime="2026-02-10T09:55:34+08:00">2026-02-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://jiuyuyutianqing.github.io/STM32-/2026/02/09/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/STM32-/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/STM32-/2026/02/09/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2026-02-09 22:01:32" itemprop="dateCreated datePublished" datetime="2026-02-09T22:01:32+08:00">2026-02-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
 
 
