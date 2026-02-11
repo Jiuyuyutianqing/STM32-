@@ -192,7 +192,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2026-02-11 20:19:16" itemprop="dateModified" datetime="2026-02-11T20:19:16+08:00">2026-02-11</time>
+      <time title="Modified: 2026-02-11 20:40:34" itemprop="dateModified" datetime="2026-02-11T20:40:34+08:00">2026-02-11</time>
     </span>
 
   
@@ -288,7 +288,7 @@
 </ul>
 <h3 id="MX相关配置"><a href="#MX相关配置" class="headerlink" title="MX相关配置"></a>MX相关配置</h3><p>  <img src="https://pic1.imgdb.cn/item/698bfa6830a31bf8f573fb85.png">  </p>
 <ul>
-<li>该是通过TI1FP1来产生相关事件，对CNT计数器清零来达到的效果，CC1标志位置1是由TI1FP1（通道1输入滤波后的信号）检测到PWM波上升沿引起的</li>
+<li>该是通过TI1FP1来产生相关事件，对CNT计数器清零来达到的效果，CC1标志位置1是由输入捕获（通道1输入滤波后的信号）检测到PWM波上升沿引起的，而TI1FP1的作用是作为从模式控制器，此处用检测到PWM上升沿后进行的对CNT计数器进行复位（清零）的操作</li>
 </ul>
 <h2 id="利用从模式控制器来进行编码器实验"><a href="#利用从模式控制器来进行编码器实验" class="headerlink" title="利用从模式控制器来进行编码器实验"></a>利用从模式控制器来进行编码器实验</h2><h3 id="相关原理解释"><a href="#相关原理解释" class="headerlink" title="相关原理解释"></a>相关原理解释</h3><p>  <img src="https://pic1.imgdb.cn/item/698bf74630a31bf8f573f629.png"><br>  如图所示，从模式控制器里面有两个专门用于编码器测量的接口<br>  <img src="https://pic1.imgdb.cn/item/698bf79630a31bf8f573f62b.png">  </p>
 <ul>
