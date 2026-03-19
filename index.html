@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/STM32-/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -147,6 +147,106 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://jiuyuyutianqing.github.io/STM32-/2026/03/19/SPI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/STM32-/images/avatar.gif">
+      <meta itemprop="name" content="Jiuyuyutianqing">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="久雨遇天晴的学习小窝">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 久雨遇天晴的学习小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/STM32-/2026/03/19/SPI/" class="post-title-link" itemprop="url">SPI</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2026-03-19 17:48:25 / Modified: 18:09:44" itemprop="dateCreated datePublished" datetime="2026-03-19T17:48:25+08:00">2026-03-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="SPI"><a href="#SPI" class="headerlink" title="SPI"></a>SPI</h1><h2 id="SPI介绍"><a href="#SPI介绍" class="headerlink" title="SPI介绍"></a>SPI介绍</h2><ul>
+<li>SPI是一种通信协议，通过一个主机挂载多个从机来进行数据通信，SPI是全双工模式，SCK（时钟线）完全由主机来控制，对所有从机来说，所有SCK时钟线为输入。</li>
+<li>SPI的硬件电路<br><img src="https://pic1.imgdb.cn/item/69bbc79116acd2f37b86d2d8.png">  </li>
+<li>主机上有多个SS，可以挂载在不同的从机的SS上面，通过这个数据线进行数据传输</li>
+</ul>
+<h2 id="SPI数据传输过程及原理"><a href="#SPI数据传输过程及原理" class="headerlink" title="SPI数据传输过程及原理"></a>SPI数据传输过程及原理</h2><h3 id="数据传输要求"><a href="#数据传输要求" class="headerlink" title="数据传输要求"></a>数据传输要求</h3><ol>
+<li>所有SPl设备的SCK、MOSI、MISO分别连在一起  </li>
+<li>主机另外引出多条SS控制线，分别接到各从机的SS引脚  </li>
+<li>输出引脚配置为推挽输出，输入引脚配置为浮空或上拉输入</li>
+</ol>
+<h3 id="数据传输方式"><a href="#数据传输方式" class="headerlink" title="数据传输方式"></a>数据传输方式</h3><ul>
+<li>通过移位寄存器进行数据传输<br><img src="https://pic1.imgdb.cn/item/69bbc86616acd2f37b86d2e0.png">  </li>
+<li>以上图举例，主机和从机通过MOSI和MISO将各自的数据一位一位传给对方，直至完全置换。</li>
+</ul>
+<h3 id="数据传输的过程"><a href="#数据传输的过程" class="headerlink" title="数据传输的过程"></a>数据传输的过程</h3><ol>
+<li>要先对数据传输进行起始信号的传递，一般来说，把<strong>SS从高电平切换到低电平</strong>作为<strong>起始条件</strong>，把<strong>SS从低电平切换到高电平</strong>作为<strong>终止条件</strong>  </li>
+<li>它的通信过程就是通过指令码+读写数据的过程<br><img src="https://pic1.imgdb.cn/item/69bbc99216acd2f37b86fe4f.png"></li>
+</ol>
+<ul>
+<li>以上图为例子，低电平为变化时期，高电平为读取时期</li>
+</ul>
+<h3 id="数据传输的四种模式"><a href="#数据传输的四种模式" class="headerlink" title="数据传输的四种模式"></a>数据传输的四种模式</h3><p>1.<br><img src="https://pic1.imgdb.cn/item/69bbc9f316acd2f37b86fe5d.png"><br>2.<br><img src="https://pic1.imgdb.cn/item/69bbca0916acd2f37b86fe60.png"><br>3.<br><img src="https://pic1.imgdb.cn/item/69bbca1b16acd2f37b86fe61.png"><br>4.<br><img src="https://pic1.imgdb.cn/item/69bbca2716acd2f37b86fe62.png">  </p>
+<ul>
+<li>CPHA是时钟相位，CPHA只能决定第几个边缘开始采样，并不能决定上升就采样或者说下降就采样。  </li>
+<li>简单来说，模式0为极性＝低，第一边缘采集，模式1为极性＝低，第二边缘采集，模式2为极性＝高，第一边缘进行采集，模式3为极性＝高，第二边缘进行采集。</li>
+</ul>
+<h2 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h2><ol>
+<li>SPI波特率的选取要满足于三个条件（1.选择允许的最大值，2.考虑设备所能承受的极限，3.考虑电路板所能承受的极限）  </li>
+<li>根据实际情况选取传输有效位的顺序<br><img src="https://pic1.imgdb.cn/item/69bbc9e116acd2f37b86fe5b.png">  </li>
+<li>对时钟极性进行讲解<br><img src="https://pic1.imgdb.cn/item/69bbcb4316acd2f37b86fe6d.png"></li>
+</ol>
+<h2 id="SPI相关实验实现"><a href="#SPI相关实验实现" class="headerlink" title="SPI相关实验实现"></a>SPI相关实验实现</h2>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
