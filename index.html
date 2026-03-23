@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/STM32-/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -147,6 +147,119 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://jiuyuyutianqing.github.io/STM32-/2026/03/23/%E5%85%B3%E4%BA%8ESTM32H723ZGT6%E7%9A%84TFT%E5%B1%8F%E5%B9%95%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/STM32-/images/avatar.gif">
+      <meta itemprop="name" content="Jiuyuyutianqing">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="久雨遇天晴的学习小窝">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 久雨遇天晴的学习小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/STM32-/2026/03/23/%E5%85%B3%E4%BA%8ESTM32H723ZGT6%E7%9A%84TFT%E5%B1%8F%E5%B9%95%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">关于STM32H723ZGT6的TFT屏幕使用指南</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2026-03-23 21:20:36 / Modified: 22:11:45" itemprop="dateCreated datePublished" datetime="2026-03-23T21:20:36+08:00">2026-03-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="产品简介"><a href="#产品简介" class="headerlink" title="产品简介"></a>产品简介</h1><p>本产品是基于鹿小斑LXB723ZG-P1核心板的1.54寸的屏幕的一些写屏幕函数，代码移植的教程。  </p>
+<h1 id="CUMBMX配置教程"><a href="#CUMBMX配置教程" class="headerlink" title="CUMBMX配置教程"></a>CUMBMX配置教程</h1><ol>
+<li>时钟主频：550Mhz<br>SPI频率137.5Mhz<br>使用SPI6  </li>
+<li>引脚配置：PG8：SPI6_NSS（LCD硬件片选CS（低电平有效））<br>PG13:SPI6_SCK（SPI的串行时钟）<br>PG14:SPI6_MOSI（SPI的串行数据输出（主机发，屏接收）<br>PG15:LCD_DC（命令，数据选择引脚）（ <strong>配置为通用推挽输出</strong>  ）<br>PG12:LCD_Backlight（LCD背光控制引脚（高&#x3D;开背光））（ <strong>配置为通用推挽输出</strong>）  </li>
+<li>SPI模式设置：<br><img src="https://pic1.imgdb.cn/item/69c14446ac52b0dbce26e1a6.png"></li>
+</ol>
+<ul>
+<li>因为只需要发送数据不需要接收数据，所以模式设置为仅发送<br><img src="https://pic1.imgdb.cn/item/69c1447aac52b0dbce26e1a8.png">  </li>
+<li>NSS相关设置</li>
+</ul>
+<h1 id="代码移植部分"><a href="#代码移植部分" class="headerlink" title="代码移植部分"></a>代码移植部分</h1><ol>
+<li></li>
+</ol>
+<p><img src="https://pic1.imgdb.cn/item/69c1451aac52b0dbce26e1ac.png">  </p>
+<ul>
+<li>将该文件夹下面的文件全部复制到新工程中</li>
+</ul>
+<ol start="2">
+<li>将CUMBMX帮你配置的spi.c文件中 <strong>void MX_SPI6_Init(void)</strong>  和  <strong>void HAL_SPI_MspInit(SPI_HandleTypeDef spiHandle)</strong>  两个函数全部注释掉</li>
+</ol>
+<ul>
+<li>完成上述两个步骤后就已经成功移植了代码</li>
+</ul>
+<h1 id="相关函数以及使用说明"><a href="#相关函数以及使用说明" class="headerlink" title="相关函数以及使用说明"></a>相关函数以及使用说明</h1><h2 id="初始化部分"><a href="#初始化部分" class="headerlink" title="初始化部分"></a>初始化部分</h2><p><img src="https://pic1.imgdb.cn/item/69c1465dac52b0dbce26e1d8.png">  </p>
+<h2 id="屏幕写入内容固定流程部分"><a href="#屏幕写入内容固定流程部分" class="headerlink" title="屏幕写入内容固定流程部分"></a>屏幕写入内容固定流程部分</h2><p><img src="https://pic1.imgdb.cn/item/69c14691ac52b0dbce26e1dc.png">    </p>
+<ul>
+<li>先设置屏幕底色，然后进行清屏，然后设置字体颜色，然后设置字体大小，最后根据要写入的图像或者文字信息进行函数选择，进行数据填写。</li>
+</ul>
+<h2 id="屏幕及字体颜色"><a href="#屏幕及字体颜色" class="headerlink" title="屏幕及字体颜色"></a>屏幕及字体颜色</h2><p><img src="https://pic1.imgdb.cn/item/69c1471bac52b0dbce26e1e7.png">  </p>
+<h2 id="字体尺寸"><a href="#字体尺寸" class="headerlink" title="字体尺寸"></a>字体尺寸</h2><p><img src="https://pic1.imgdb.cn/item/69c147dbac52b0dbce270b3b.png">  </p>
+<h2 id="相关函数介绍"><a href="#相关函数介绍" class="headerlink" title="相关函数介绍"></a>相关函数介绍</h2><ol>
+<li>写字符函数<br><img src="https://pic1.imgdb.cn/item/69c14870ac52b0dbce270b43.png">  </li>
+<li>设置文本字体以及文本内容函数<br><img src="https://pic1.imgdb.cn/item/69c148b8ac52b0dbce270b47.png"></li>
+</ol>
+<ul>
+<li>文本字体函数<br><img src="https://pic1.imgdb.cn/item/69c14941ac52b0dbce270b4b.png">  </li>
+<li>显示文本内容函数</li>
+</ul>
+<ol start="3">
+<li>设置图像相关函数<br><img src="https://pic1.imgdb.cn/item/69c149b8ac52b0dbce270b4e.png"></li>
+</ol>
+<ul>
+<li>ps：相关图片的上传要先通过取模软件进行取模先。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
