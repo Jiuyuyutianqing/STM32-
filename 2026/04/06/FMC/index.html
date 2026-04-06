@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/STM32-/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/STM32-/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/STM32-/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/STM32-/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/STM32-/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jiuyuyutianqing.github.io","root":"/STM32-/","images":"/STM32-/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/STM32-/js/config.js" defer></script>
+
+    <meta name="description" content="通过FMC让单片机芯片与SDRAM建立联系SDRAM的介绍存储器的介绍SDRAM又叫同步动态随机存储器。同步的DRAM可以分为同步和异步两种，这两种方式根据通讯时序是否需要使用时钟来区分。下图是一种利用时钟进行同步的通讯时序，它在时钟的上升沿表示有效数据，也就是SDRAM    同步是指内存工作需要同步时钟，内部的命令的发送和数据的传输都以它为基准。   动态是指内存阵列需要不断的刷新来保存数据不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FMC">
+<meta property="og:url" content="https://jiuyuyutianqing.github.io/STM32-/2026/04/06/FMC/index.html">
+<meta property="og:site_name" content="久雨遇天晴的学习小窝">
+<meta property="og:description" content="通过FMC让单片机芯片与SDRAM建立联系SDRAM的介绍存储器的介绍SDRAM又叫同步动态随机存储器。同步的DRAM可以分为同步和异步两种，这两种方式根据通讯时序是否需要使用时钟来区分。下图是一种利用时钟进行同步的通讯时序，它在时钟的上升沿表示有效数据，也就是SDRAM    同步是指内存工作需要同步时钟，内部的命令的发送和数据的传输都以它为基准。   动态是指内存阵列需要不断的刷新来保存数据不">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/69d3bb7205c903f9c7cdf764.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/69d3bc1e05c903f9c7cdf7d0.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/69d3c38c05c903f9c7ce3f8e.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/69d3c8b505c903f9c7ce608c.png">
+<meta property="og:image" content="https://pic1.imgdb.cn/item/69d3c90505c903f9c7ce60b5.png">
+<meta property="article:published_time" content="2026-04-06T13:26:01.000Z">
+<meta property="article:modified_time" content="2026-04-06T15:00:07.356Z">
+<meta property="article:author" content="Jiuyuyutianqing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/item/69d3bb7205c903f9c7cdf764.png">
+
+
+<link rel="canonical" href="https://jiuyuyutianqing.github.io/STM32-/2026/04/06/FMC/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://jiuyuyutianqing.github.io/STM32-/2026/04/06/FMC/","path":"2026/04/06/FMC/","title":"FMC"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FMC | 久雨遇天晴的学习小窝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/STM32-/js/utils.js" defer></script><script src="/STM32-/js/motion.js" defer></script><script src="/STM32-/js/sidebar.js" defer></script><script src="/STM32-/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/STM32-/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/STM32-/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">久雨遇天晴的学习小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E8%BF%87FMC%E8%AE%A9%E5%8D%95%E7%89%87%E6%9C%BA%E8%8A%AF%E7%89%87%E4%B8%8ESDRAM%E5%BB%BA%E7%AB%8B%E8%81%94%E7%B3%BB"><span class="nav-number">1.</span> <span class="nav-text">通过FMC让单片机芯片与SDRAM建立联系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SDRAM%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">SDRAM的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.1.</span> <span class="nav-text">存储器的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FSMC%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.2.</span> <span class="nav-text">FSMC介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">简单介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E5%9B%BE"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">原理图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8FSMC%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">使用FSMC的好处</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%85%B3FSMC%E7%9A%84%E7%9B%B8%E5%85%B3%E6%97%B6%E9%92%9F%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">有关FSMC的相关时钟问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FSMC%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">FSMC的四种模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FSMC%E7%9A%84%E5%8A%9F%E8%83%BD%E5%92%8C%E7%89%B9%E7%82%B9"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">FSMC的功能和特点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FMC%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">FMC介绍以及使用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jiuyuyutianqing</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/STM32-/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jiuyuyutianqing.github.io/STM32-/2026/04/06/FMC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/STM32-/images/avatar.gif">
+      <meta itemprop="name" content="Jiuyuyutianqing">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="久雨遇天晴的学习小窝">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FMC | 久雨遇天晴的学习小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FMC
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2026-04-06 21:26:01 / Modified: 23:00:07" itemprop="dateCreated datePublished" datetime="2026-04-06T21:26:01+08:00">2026-04-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="通过FMC让单片机芯片与SDRAM建立联系"><a href="#通过FMC让单片机芯片与SDRAM建立联系" class="headerlink" title="通过FMC让单片机芯片与SDRAM建立联系"></a>通过FMC让单片机芯片与SDRAM建立联系</h1><h2 id="SDRAM的介绍"><a href="#SDRAM的介绍" class="headerlink" title="SDRAM的介绍"></a>SDRAM的介绍</h2><h3 id="存储器的介绍"><a href="#存储器的介绍" class="headerlink" title="存储器的介绍"></a>存储器的介绍</h3><p><img src="https://pic1.imgdb.cn/item/69d3bb7205c903f9c7cdf764.png"><br>SDRAM又叫同步动态随机存储器。同步的DRAM可以分为同步和异步两种，这两种方式根据通讯时序是否需要使用时钟来区分。<br>下图是一种利用时钟进行同步的通讯时序，它在时钟的上升沿表示有效数据，也就是SDRAM<br><img src="https://pic1.imgdb.cn/item/69d3bc1e05c903f9c7cdf7d0.png">  </p>
+<ul>
+<li>同步是指内存工作需要同步时钟，内部的命令的发送和数据的传输都以它为基准。  </li>
+<li>动态是指内存阵列需要不断的刷新来保存数据不丢失。  </li>
+<li>随机是指数据不是线性依次存储，而是自由指定地址进行数据读写</li>
+</ul>
+<h3 id="FSMC介绍"><a href="#FSMC介绍" class="headerlink" title="FSMC介绍"></a>FSMC介绍</h3><h4 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h4><ul>
+<li>为什么将FMC要先介绍FSMC，因为我想通过先讲FSMC来讲解它地基本原理，然后通过写它与FMC的不同再把FMC介绍出来。<br>FSMC( Flexible static memory controller)全称“灵活的静态存储器控制器”，是STM32中一个很有特色的外设，通过FSMC，STM32可以通过FSMC与SRAM, ROM, PSRAM, Nor Flash和NandFlash存储器的引脚相连，从而进行数据的交换。  </li>
+<li>PS:FSMC只能扩展静态的内存，即名称里面的S:static，不能是动态的内存，比如SDRAM就不能扩展。</li>
+</ul>
+<h4 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h4><ul>
+<li>下面来看一个DRAM的原理图<br><img src="https://pic1.imgdb.cn/item/69d3c38c05c903f9c7ce3f8e.png"><br>图中A0<del>18为地址线，总共19根地址线(即2^19&#x3D;512K，1K&#x3D;1024);DQ0</del>15为数据线，总共16根数据线。CEn是芯片使能信号，低电平有效;OEn是输出使能信号，低电平有效;WEn是写使能信号，低电平有效;BLEn和BHEn分别是高字节控制和低字节控制信号。</li>
+</ul>
+<h4 id="使用FSMC的好处"><a href="#使用FSMC的好处" class="headerlink" title="使用FSMC的好处"></a>使用FSMC的好处</h4><ul>
+<li>如果我们不用FSMC，而是直接跟DRAM通信，那么我们代码会变成怎么样呢？</li>
+</ul>
+<pre><code class="language-C">CEn=0;
+WEn=0;
+....
+省略的控制时序
+//确定地址线
+A0=1;
+A1=0;
+A2=1;
+A3=1;
+A4=1;
+A5=0;
+A6=1;
+A7=1;
+A8=1;
+A9=0;
+A10=1;
+A11=1;
+A12=1;
+A13=0;
+A14=1;
+A15=1;
+A16=1;
+A17=1;
+A18=1;
+
+//地址线确定好了，假设是写数据，那么就要开始发送数据了
+CEn=0;
+....
+省略的控制时序
+//数据总线发送数据
+D0=1;
+D1=0;
+D2=1;
+D3=1;
+D4=1;
+D5=0;
+D6=1;
+D7=1;
+D8=1;
+D9=0;
+D10=1;
+D11=1;
+D12=1;
+D13=0;
+D14=1;
+D15=1;
+....
+省略的控制时序
+</code></pre>
+<p>通过上面最基本的演示，你就会发现，正常通过IO口的时序逻辑跟DRAM通信是非常繁琐的  </p>
+<ul>
+<li>那么有没有简单的方法呢?有的兄弟有的！STM32自带的FSMC功能，就是专门为这类存储器设计的，在STM32上，有一些引脚被专门设计成地址线，还有一些被专门设计成数据线，还有一些被设计成控制线，然后这些地址线和数据线对应着固定的地址，只要外部的DRAM等存储器将对应的数据线连接到STM32这些对应的引脚上，引脚功能设置为复用模式，通过配置FSMC，你可以直接给上面那个固定的地址赋值，其他操作STM32都会自动给你完成，就可以把数据存储到SRAM中!  </li>
+<li>下面我来演示一下使用FSMC读写数据的流程</li>
+</ul>
+<pre><code class="language-C">//FSMC_Bank1_NORSRAM  
+#define      FSMC_Addr_DATA        ( ( uint32_t ) 0x60020000 )
+
+//如果要写数据，直接给这个地址赋值就可以
+/**
+  * @brief  SRAM写入数据
+  * @param  usData :要写入的数据
+  * @retval 无
+  */	
+ void SRAM_Write_Data ( uint16_t usData )
+{
+	* ( __IO uint16_t * ) ( FSMC_Addr_DATA ) = usData;
+	
+}
+
+//如果要从储存器中读取数据，直接读取这个地址就可以：
+/**
+  * @brief  从SRAM读取数据
+  * @param  无
+  * @retval 读取到的数据
+  */	
+ uint16_t SRAM_Read_Data ( void )
+{
+	return ( * ( __IO uint16_t * ) ( FSMC_Addr_DATA ) );	
+}
+
+uint16_t usR=0;
+
+usR = SRAM_Read_Data (); 	/* READ DATA*/
+</code></pre>
+<h4 id="有关FSMC的相关时钟问题"><a href="#有关FSMC的相关时钟问题" class="headerlink" title="有关FSMC的相关时钟问题"></a>有关FSMC的相关时钟问题</h4><ul>
+<li>FSMC外设挂载在AHB总线上，时钟信号来源于HCLK，控制器的同步时钟输出就是由它分频得到，它的时钟频率可通过FSMC_BTR寄存器的CLKDIV位配置，HCLK与FSMC_CLK的分频系数，可以为2~16分频</li>
+</ul>
+<h4 id="FSMC的四种模式"><a href="#FSMC的四种模式" class="headerlink" title="FSMC的四种模式"></a>FSMC的四种模式</h4><p><img src="https://pic1.imgdb.cn/item/69d3c8b505c903f9c7ce608c.png">  </p>
+<ul>
+<li>选用不同的时序模型时，需要设置不同的时序参数<br><img src="https://pic1.imgdb.cn/item/69d3c90505c903f9c7ce60b5.png">  </li>
+<li>FSMC的参数设置</li>
+</ul>
+<h4 id="FSMC的功能和特点"><a href="#FSMC的功能和特点" class="headerlink" title="FSMC的功能和特点"></a>FSMC的功能和特点</h4><ol>
+<li>FSMC的功能总结:将AHB传输信号转换到适当的外部设备协议;满足访问外部设备的时序要求。所有的外部存储器共享控制器输出的地址、数据和控制信号，每个外部设备可以通过一个唯一的片选信号加以区分。FSMC在任一时刻只访问一个外部设备。  </li>
+<li>FSMC的特点<br>1、FSMC的一大特点是支持不同位宽的异步读写操作。<br>2、FSMC的映射地址空间中，不同的BANK是独立的，可用于扩展不同类型的存储器。当FSMC同时使用多个外部存储器时，FSMC会通过总线悬空延时时间参数，来防止访问冲突发生。<br>3、支持代码从FSMC扩展的外部存储器中直接运行。<br>不需要首先调入内部SRAM。</li>
+</ol>
+<h2 id="FMC介绍以及使用"><a href="#FMC介绍以及使用" class="headerlink" title="FMC介绍以及使用"></a>FMC介绍以及使用</h2>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/STM32-/2026/03/23/%E5%85%B3%E4%BA%8ESTM32H723ZGT6%E7%9A%84TFT%E5%B1%8F%E5%B9%95%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" rel="prev" title="关于STM32H723ZGT6的TFT屏幕使用指南">
+                  <i class="fa fa-angle-left"></i> 关于STM32H723ZGT6的TFT屏幕使用指南
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jiuyuyutianqing</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
