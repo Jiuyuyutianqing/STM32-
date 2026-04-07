@@ -184,9 +184,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2026-04-06 21:26:01 / Modified: 23:00:07" itemprop="dateCreated datePublished" datetime="2026-04-06T21:26:01+08:00">2026-04-06</time>
+      <time title="Created: 2026-04-06 21:26:01" itemprop="dateCreated datePublished" datetime="2026-04-06T21:26:01+08:00">2026-04-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-04-07 22:08:29" itemprop="dateModified" datetime="2026-04-07T22:08:29+08:00">2026-04-07</time>
     </span>
 
   
@@ -311,7 +317,40 @@ usR = SRAM_Read_Data (); 	/* READ DATA*/
 <li>FSMC的功能总结:将AHB传输信号转换到适当的外部设备协议;满足访问外部设备的时序要求。所有的外部存储器共享控制器输出的地址、数据和控制信号，每个外部设备可以通过一个唯一的片选信号加以区分。FSMC在任一时刻只访问一个外部设备。  </li>
 <li>FSMC的特点<br>1、FSMC的一大特点是支持不同位宽的异步读写操作。<br>2、FSMC的映射地址空间中，不同的BANK是独立的，可用于扩展不同类型的存储器。当FSMC同时使用多个外部存储器时，FSMC会通过总线悬空延时时间参数，来防止访问冲突发生。<br>3、支持代码从FSMC扩展的外部存储器中直接运行。<br>不需要首先调入内部SRAM。</li>
 </ol>
-<h2 id="FMC介绍以及使用"><a href="#FMC介绍以及使用" class="headerlink" title="FMC介绍以及使用"></a>FMC介绍以及使用</h2>
+<h2 id="FMC介绍以及使用"><a href="#FMC介绍以及使用" class="headerlink" title="FMC介绍以及使用"></a>FMC介绍以及使用</h2><h3 id="区分SRAM和SDRAM"><a href="#区分SRAM和SDRAM" class="headerlink" title="区分SRAM和SDRAM"></a>区分SRAM和SDRAM</h3><h4 id="SDRAM的原理图"><a href="#SDRAM的原理图" class="headerlink" title="SDRAM的原理图"></a>SDRAM的原理图</h4><p><img src="https://pic1.imgdb.cn/item/69d4fe273e72d2742f420bfb.png"><br><strong>FMC_D0~15</strong>:16位数据线;<br><strong>FMCA0~12</strong>:13位地址线，行地址与列地址是公用的，作为行地址时使用了0<del>12位，作为列地址时使用了0</del>8位;<br><strong>FMCSDNWE</strong>:低电平时写，高电平时读;<br><strong>FMCSDNCAS</strong>:列地址选通信号，低电平有效;<br><strong>FMCSDNRAS</strong>:行地址选通信号，低电平有效;<br><strong>FMCSDNE0</strong>:片选信号，低电平有效;<br><strong>FMC_BA0~1</strong>:Bank选择信号,两位对应4个区域<br><strong>FMC SDCKEO</strong>:时钟使能信号;<br><strong>FMC_SDCLK</strong>:时钟信号;<br><strong>FMC_NBL0~1</strong>:写访问的输出字节屏蔽，数据掩码，下面有介绍  </p>
+<h4 id="SDRAM存储单元结构"><a href="#SDRAM存储单元结构" class="headerlink" title="SDRAM存储单元结构"></a>SDRAM存储单元结构</h4><p><img src="https://pic1.imgdb.cn/item/69d500ee3e72d2742f42412a.png">  </p>
+<ul>
+<li>对于这个存储阵列，我们可以将其看成是一个表格，只需要给定行地址(Row)和列地址(Column)，就可以确定其唯一位置，这就是SDRAM寻址的基本原理。而一个SDRAM芯片内部，一般又有4个这样的存储单元(BANK)，所以，在SDRAM 内部寻址的时候，先指定BANK号和行地址，然后再指定列地址，就可以查找到目标地址。从而完成对目标存储地址数据的读写。<br><img src="https://pic1.imgdb.cn/item/69d501be3e72d2742f424156.png">  </li>
+<li>以上为SDRAM的存储结构示</li>
+</ul>
+<h4 id="SDRAM的寻址方式"><a href="#SDRAM的寻址方式" class="headerlink" title="SDRAM的寻址方式"></a>SDRAM的寻址方式</h4><ol>
+<li>寻址的时候，首先RAS信号为低电平，选通行地址，地址线A0~A12所表示的地址，会被传输并锁  </li>
+<li>存到行地址译码器里面，行地址就确定了  </li>
+<li>同时BANK地址线上面的BS0，BS1所表示的BANK地址，也会被锁存,选中对应的BANK两位二进制就是00<del>11对应BANK0</del>BANK3  </li>
+<li>然后，CAS信号为低电平，选通列地址  </li>
+<li>地址线A0~A12所表示的地址，会被传输并锁存到列地址译码器里面，作为列地址。</li>
+</ol>
+<h4 id="常用的控制命令"><a href="#常用的控制命令" class="headerlink" title="常用的控制命令"></a>常用的控制命令</h4><p><img src="https://pic1.imgdb.cn/item/69d5030b3e72d2742f424181.png">  </p>
+<ol>
+<li><strong>NO-Operation NO-Operation</strong>:即空操作命令，用于选中SDRAM，防止SDRAM接受错误的命令，为接下来的命令发送做准备。  </li>
+<li><strong>Active</strong>:即激活命令，该命令必须在读写操作之前被发送，用于设置所需要的Bank和行地址(同时设置这2个地址)，Bank地址由BA0，BA1指定，行地址由A0~A12指定  </li>
+<li><strong>Read&#x2F;Write</strong>，即读&#x2F;写命令，行地址通过”行有效”命令确定后，就要对列地址进行寻址了，，再发送列地址就可以完成对SDRAM的寻址，并进行读写操作了，列地址由A0~A9指定。WE引脚表示读&#x2F;写方向，WE为低电平时表示写，高电平时表示读，读&#x2F;写命令和列地址的发送，是通过一次传输完成的  </li>
+<li><strong>Precharge</strong>，预充电指令，用于关闭Bank中所打开的行地址。由于SDRAM的寻址具有独占性，所以在进行完读写操作后，如果要对同一Bank的另一行进行寻址，就要将原来有效(ACTIVE)的行关闭，重新发送行&#x2F;列地址。Bank关闭现有工作行，准备打开新行的操作就叫做预充电(Precharge)<br><em><strong>PS：预充电命令可以通过独立的命令发送，也可以在每次发送读&#x2F;写命令的时候，使用地址线A10，来设置自动预充电。在发送读&#x2F;写命令的时候，若A10为高电平时，在读&#x2F;写操作完成后，所有Bank都预充这样，下次读&#x2F;写操作之前，就不需要再发预充电命令了，A10为低电平时，使用BA线选择要预充电的Bank</strong></em>  </li>
+<li><strong>Refresh</strong>，即刷新命令，用于刷新一行数据。SDRAM 里面存储的数据，需要不断的进行刷新操作才能保留住，因此刷新命令对于SDRAM来说，尤为重要。预充电命令和刷新命令，都可以实现对SDRAM数据的刷新，不过预充电仅对当前打开的行有效(仅刷新当前行)，而刷新命令，则可以依次对所有的行进行刷新操作。</li>
+</ol>
+<h3 id="FMC的CUBUMX配置"><a href="#FMC的CUBUMX配置" class="headerlink" title="FMC的CUBUMX配置"></a>FMC的CUBUMX配置</h3><ol>
+<li>配置时钟树（使用外部高速晶振）  </li>
+<li>FMC设置<br><img src="https://pic1.imgdb.cn/item/69d506783e72d2742f424223.png">  </li>
+<li>FMC时钟配置<br> <img src="https://pic1.imgdb.cn/item/69d50b823e72d2742f424347.png"></li>
+</ol>
+<ul>
+<li>设置HSE为25Mhz系统时钟来源选择PLL锁相环系统时钟哪里填写400，然后按回车，CubemMx会自动配置好。  </li>
+<li>FMC外设挂载在AHB3总线上，时钟信号来自于HCLK(默认200MHz)，控制器的时钟输出就是由它分频得到。还可以可以选择如下几种时钟源HCLK3, PLL1Q, PLL2R 和 PER CK<br>我们这里直接使用HCLK3，配置STM32H7的主频为400MHz的时候，HCLK3输出的200MHz，这个速度是FMC支持的最高时钟<br><img src="https://pic1.imgdb.cn/item/69d50c5a3e72d2742f424377.png"></li>
+</ul>
+<ol start="4">
+<li>SDRAM的参数设置<br><img src="https://pic1.imgdb.cn/item/69d50d473e72d2742f4243c5.png"><br><strong>Bank</strong>:选择的是SDRAM的bank1还是bank2上面Clock and chip enable设置了这里就会自动选择，我们用的是BANK1，这里也是BANK1<br><strong>Number of column address bits</strong> 列地址位数W9825G6KH有9位列地址<br><strong>Number of row address bits</strong> 行地址位数 W9825G6KH有13位行地址<br><strong>CASlatency</strong>:指列地址选通延迟，简称CL，在发出读命令(命令同时包含列地址)后，需要等待几个时钟周期数据线Data才会输出有效数据，这之间的等待时间就是指CL，CL一般可以设置为2或3个FMC时钟周期这里我们设置为两个时钟周期<br><strong>Write protection</strong> 设置是否使能写保护模式，如果使能了写保护则不能向SDRAM写入数据，正常使用都是禁止写保护<br><strong>SDRAM common clock</strong> 设置 FMC 与外部 SDRAM 通讯时的时钟频率，可以设置成STM32的HCLK时钟频率的1&#x2F;2、1&#x2F;3或禁止输出时钟(异步RAM不需要时钟)<br>这里我们设置为2分频，就是1&#x2F;2 SDRAM的时钟就是100Mhz<br>(FMC SDRAM CLOCK PERIOD 2&#x2F;3 或FMC SDRAM_CLOCK DISABLE)<br><strong>SDRAM common burst read</strong> 设置是否使能突发读取模式，禁止时等效于 BL&#x3D;1，使能时BL的值等于模式寄存器中的配置。<br><strong>SDRAM common read pipe delay</strong> 于配置在CASLatency地址选通延迟后，再等待多少个HCLK时钟周期才进行数据采样，在确保正确的前提下，这个值设置为越短越好，可选择设置的参数值为0、1或2个HCLK时钟周期(FMC SDRAM RPIPE DELAY_0&#x2F;1&#x2F;2)</li>
+</ol>
+
       
     </div>
 
